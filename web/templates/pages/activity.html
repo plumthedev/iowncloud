@@ -1,0 +1,9 @@
+{{define "title"}}{{t .L "nav.activity"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<h1>{{t $l "nav.activity"}}</h1>
+<div class="group">
+{{range .Jobs}}{{template "job-row" (dict "J" . "L" $l "ShowDevice" true)}}{{else}}
+  <div class="row"><span class="label">{{t $l "activity.empty"}}</span></div>
+{{end}}
+</div>
+{{end}}

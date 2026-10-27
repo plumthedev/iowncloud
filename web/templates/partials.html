@@ -1,0 +1,65 @@
+{{define "device-card"}}{{$d := .D}}{{$l := .L}}
+<article class="card device health-{{$d.Health}}" id="dev-{{$d.UDID}}" data-udid="{{$d.UDID}}"
+  hx-get="/devices/{{$d.UDID}}/card{{if not .Link}}?detail=1{{end}}" hx-trigger="refresh" hx-swap="outerHTML">
+  {{if .Link}}<a class="device-head" href="/devices/{{$d.UDID}}">
+    <span class="device-icon">{{template "icon-phone"}}</span>
+    <span class="device-title">
+      <strong>{{label $d.Device}}</strong>
+      <small>{{if $d.ProductType}}{{model $d.ProductType}}{{else}}{{short $d.UDID}}{{end}}{{if $d.IOS}} · iOS {{$d.IOS}}{{end}}</small>
+    </span>
+    <span class="chev">{{template "icon-chevron"}}</span>
+  </a>{{end}}
+
+  <div class="chips">
+    {{if $d.Presence.USB}}<span class="chip on">{{template "icon-plug"}} {{t $l "status.usb"}}</span>
+    {{else if $d.Presence.Net}}<span class="chip on">{{template "icon-wifi"}} {{t $l "status.wifi"}}</span>
+    {{else}}<span class="chip">{{t $l "status.offline"}}</span>{{end}}
+    {{if eq $d.Encrypted 1}}<span class="chip">{{template "icon-lock"}} {{t $l "status.encrypted"}}</span>
+    {{else if eq $d.Encrypted 0}}<span class="chip warn">{{template "icon-alert"}} {{t $l "status.not_encrypted"}}</span>{{end}}
+  </div>
+
+  <p class="last"><span class="dot"></span>
+    {{if $d.LastOK}}{{t $l "device.last_backup" "Ago" (ago $l $d.LastOK)}}{{else}}{{t $l "device.never_backed_up"}}{{end}}
+  </p>
+
+  {{with $d.Live}}
+    <div class="live phase-{{.Phase}}" role="status" aria-live="polite">
+      <p class="phase">{{if eq .Phase "passcode"}}{{template "icon-lock"}}{{end}}<span data-phase-text>{{phase $l .Phase}}</span></p>
+      <progress data-progress {{if eq .Phase "transfer"}}value="{{.Progress}}" max="100"{{end}}></progress>
+    </div>
+  {{else}}
+    {{with $d.LastJob}}{{if eq .Status "nopasscode"}}<p class="lastjob">{{t $l "device.last_nopasscode"}}</p>
+    {{else if eq .Status "failed"}}<p class="lastjob">{{t $l "device.last_failed"}}</p>{{end}}{{end}}
+    <button class="primary-action" hx-post="/devices/{{$d.UDID}}/backup{{if not .Link}}?detail=1{{end}}"
+      hx-target="closest article" hx-swap="outerHTML" {{if not $d.Presence.Online}}disabled{{end}}>
+      {{t $l "device.backup_now"}}
+    </button>
+    <p class="hint">{{if $d.Presence.Online}}{{t $l "device.backup_hint"}}{{else}}{{t $l "device.offline_hint"}}{{end}}</p>
+  {{end}}
+</article>
+{{end}}
+
+{{define "job-row"}}{{$l := .L}}{{$j := .J}}
+<a class="row" href="/jobs/{{$j.ID}}">
+  <span class="label">
+    <span class="st-{{$j.Status}}">{{t $l (print "job.status." $j.Status)}}</span>{{if .ShowDevice}} · {{$j.DeviceName}}{{end}}
+    <small>{{unixdate $j.CreatedAt}} · {{t $l (print "job.trigger." $j.Trigger)}}{{if and $j.FinishedAt $j.StartedAt}} · {{dur (sub $j.FinishedAt $j.StartedAt)}}{{end}}{{if $j.Files}} · {{tn $l "job.files" (int $j.Files)}}{{end}}</small>
+  </span>
+  <span class="chev">{{template "icon-chevron"}}</span>
+</a>
+{{end}}
+
+{{define "icon-cloud"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>{{end}}
+{{define "icon-phone"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M11 18h2"/></svg>{{end}}
+{{define "icon-clock"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>{{end}}
+{{define "icon-bell"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>{{end}}
+{{define "icon-gear"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>{{end}}
+{{define "icon-chevron"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>{{end}}
+{{define "icon-wifi"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></svg>{{end}}
+{{define "icon-plug"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0zM12 18v4"/></svg>{{end}}
+{{define "icon-lock"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>{{end}}
+{{define "icon-alert"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>{{end}}
+{{define "icon-check"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>{{end}}
+{{define "icon-plus"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>{{end}}
+{{define "icon-upload"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5M12 3v12"/></svg>{{end}}
+{{define "icon-x"}}<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>{{end}}

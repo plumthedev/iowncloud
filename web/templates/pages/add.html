@@ -1,0 +1,89 @@
+{{define "title"}}{{t .L "add.title"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<a class="back" href="/">{{template "icon-chevron"}} {{t $l "nav.devices"}}</a>
+<h1>{{t $l "add.title"}}</h1>
+<p>{{t $l "add.intro"}}</p>
+
+{{if .Error}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{.Error}}</p></div>{{end}}
+
+<h2 id="usb">{{template "icon-plug"}} {{t $l "add.usb_title"}}</h2>
+<div class="group"><div class="pad">
+  {{if .USB}}
+    <ol class="steps">
+      <li>{{t $l "add.usb_step1"}}</li>
+      <li>{{t $l "add.usb_step2"}}</li>
+      <li>{{t $l "add.usb_step3"}}</li>
+    </ol>
+    <div hx-get="/devices/add/usb" hx-trigger="every 3s" hx-swap="innerHTML" id="usb-devices">
+      {{template "usb-devices" .}}
+    </div>
+  {{else}}
+    <p>{{t $l "add.usb_unavailable"}}</p>
+    <pre class="log">--privileged -v /dev/bus/usb:/dev/bus/usb</pre>
+  {{end}}
+</div></div>
+
+<h2 id="upload">{{template "icon-upload"}} {{t $l "add.upload_title"}}</h2>
+<div class="group"><div class="pad">
+  <p>{{t $l "add.upload_intro"}}</p>
+  <details>
+    <summary>Mac</summary>
+    <ol class="steps">
+      <li>{{t $l "add.mac_step1"}}</li>
+      <li>{{t $l "add.mac_step2"}}</li>
+      <li>{{t $l "add.mac_step3"}}</li>
+    </ol>
+    <pre class="log">sudo cp /var/db/lockdown/*.plist ~/Desktop/ && sudo chown $USER ~/Desktop/*.plist</pre>
+    <p class="footnote" style="margin:0 0 12px">{{t $l "add.mac_hint"}}</p>
+  </details>
+  <details>
+    <summary>Windows</summary>
+    <ol class="steps">
+      <li>{{t $l "add.win_step1"}}</li>
+      <li>{{t $l "add.win_step2"}}</li>
+    </ol>
+    <pre class="log">C:\ProgramData\Apple\Lockdown\</pre>
+  </details>
+  <form method="post" action="/devices/upload" enctype="multipart/form-data">
+    <input type="file" name="record" accept=".plist" required aria-label="{{t $l "add.upload_file"}}">
+    <button type="submit">{{t $l "add.upload_button"}}</button>
+  </form>
+</div></div>
+{{end}}
+
+{{define "usb-devices"}}{{$l := .L}}
+{{range .Unpaired}}
+  <div class="banner" id="pair-{{.}}">
+    {{template "icon-phone"}}
+    <p style="flex:1"><strong>{{t $l "add.usb_found"}}</strong><small>{{short .}}</small></p>
+    <form hx-post="/devices/pair" hx-target="#usb-devices" hx-swap="outerHTML" hx-disabled-elt="find button">
+      <input type="hidden" name="udid" value="{{.}}">
+      <button type="submit" class="small">{{t $l "add.pair"}}</button>
+    </form>
+  </div>
+{{else}}
+  <p class="hint" aria-live="polite">{{t $l "add.usb_waiting"}}</p>
+{{end}}
+{{end}}
+
+{{define "pair-result"}}{{$l := .L}}
+<div id="usb-devices">
+{{if eq .Result.State "ok"}}
+  <div class="banner good">{{template "icon-check"}}<p><strong>{{t $l "add.pair_ok"}}</strong><small>{{t $l "add.pair_ok_hint"}}</small></p></div>
+  <a role="button" href="/devices/{{.UDID}}">{{t $l "add.open_device"}}</a>
+{{else if eq .Result.State "trust"}}
+  <div class="banner warn">{{template "icon-lock"}}<p><strong>{{t $l "add.pair_trust"}}</strong><small>{{t $l "add.pair_trust_hint"}}</small></p></div>
+  <form hx-post="/devices/pair" hx-target="#usb-devices" hx-swap="outerHTML" hx-disabled-elt="find button">
+    <input type="hidden" name="udid" value="{{.UDID}}">
+    <button type="submit">{{t $l "add.pair_continue"}}</button>
+  </form>
+{{else}}
+  <div class="banner bad">{{template "icon-alert"}}<p><strong>{{t $l "add.pair_error"}}</strong></p></div>
+  <pre class="log">{{.Result.Out}}</pre>
+  <form hx-post="/devices/pair" hx-target="#usb-devices" hx-swap="outerHTML" hx-disabled-elt="find button">
+    <input type="hidden" name="udid" value="{{.UDID}}">
+    <button type="submit" class="secondary">{{t $l "add.pair_retry"}}</button>
+  </form>
+{{end}}
+</div>
+{{end}}

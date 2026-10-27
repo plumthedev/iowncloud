@@ -1,0 +1,31 @@
+{{define "title"}}{{t .L "nav.devices"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<div class="title-row">
+  <h1>{{t $l "nav.devices"}}</h1>
+  {{if .Devices}}<a href="/devices/add" role="button" class="small">{{template "icon-plus"}} {{t $l "devices.add"}}</a>{{end}}
+</div>
+
+{{if and .Muxer.Enabled (not .Muxer.Running)}}
+  <div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{t $l "devices.muxer_down"}}<small>{{.Muxer.LastErr}}</small></p></div>
+{{end}}
+
+{{range .Unpaired}}
+  <a class="banner" href="/devices/add#usb">{{template "icon-plug"}}
+    <p><strong>{{t $l "devices.usb_detected"}}</strong><small>{{t $l "devices.usb_detected_hint"}}</small></p>
+    <span class="chev">{{template "icon-chevron"}}</span>
+  </a>
+{{end}}
+
+<div data-live>
+{{range .Devices}}
+  {{template "device-card" (dict "D" . "L" $l "Link" true)}}
+{{else}}
+  <div class="empty card">
+    <div class="device-icon">{{template "icon-phone"}}</div>
+    <h3>{{t $l "devices.empty_title"}}</h3>
+    <p>{{t $l "devices.empty_text"}}</p>
+    <a href="/devices/add" role="button">{{t $l "devices.add_first"}}</a>
+  </div>
+{{end}}
+</div>
+{{end}}

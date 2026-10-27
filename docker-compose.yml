@@ -1,0 +1,18 @@
+services:
+  iowncloud:
+    image: ghcr.io/plumthedev/iowncloud:latest
+    container_name: iowncloud
+    restart: unless-stopped
+    # Required: iPhones announce themselves over mDNS, which doesn't cross Docker's bridge network.
+    network_mode: host
+    # Optional: pair iPhones with a USB cable plugged into this machine.
+    privileged: true
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - ./data:/data # app state and pairing records: sensitive, keep it private
+      - /volume1/iphone-backups:/backups # use a Btrfs/XFS folder to keep previous versions
+    environment:
+      TZ: Europe/Warsaw
+      # IOWNCLOUD_LISTEN: ":8080"
+      # IOWNCLOUD_PASSWORD: "..."  # optional; otherwise you set it in the browser on first visit
+      # IOWNCLOUD_AUTH: "off"      # only behind your own authenticating reverse proxy

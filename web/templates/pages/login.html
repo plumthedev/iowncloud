@@ -1,0 +1,9 @@
+{{define "title"}}{{t .L "login.title"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<div class="brand-big"><div class="device-icon">{{template "icon-cloud"}}</div><h1>iowncloud</h1></div>
+{{if .Error}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{t $l "login.error"}}</p></div>{{end}}
+<form method="post" action="/login" class="group"><div class="pad">
+  <input type="password" name="password" autocomplete="current-password" required autofocus placeholder="{{t $l "login.password"}}" aria-label="{{t $l "login.password"}}">
+  <button type="submit">{{t $l "login.submit"}}</button>
+</div></form>
+{{end}}

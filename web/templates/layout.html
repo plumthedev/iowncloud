@@ -1,0 +1,46 @@
+{{define "layout"}}<!doctype html>
+<html lang="{{.Lang}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="iowncloud">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/icon-180.png">
+  <link rel="stylesheet" href="/static/pico.min.css">
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/htmx.min.js" defer></script>
+  <script src="/static/app.js" defer></script>
+  <title>{{block "title" .}}{{end}} · iowncloud</title>
+</head>
+<body{{if .Bare}} class="bare"{{end}}>
+{{if not .Bare}}
+<header class="topbar">
+  <a href="/" class="brand">{{template "icon-cloud"}} iowncloud</a>
+  <nav>{{template "nav" .}}</nav>
+</header>
+{{end}}
+<main class="container">
+  {{template "flash" .}}
+  {{block "content" .}}{{end}}
+</main>
+{{if not .Bare}}<nav class="tabbar">{{template "nav" .}}</nav>{{end}}
+</body>
+</html>{{end}}
+
+{{define "nav"}}{{$l := .L}}
+  <a href="/" {{if navActive .Path "/"}}aria-current="page"{{end}}>{{template "icon-phone"}}<span>{{t $l "nav.devices"}}</span></a>
+  <a href="/activity" {{if navActive .Path "/activity"}}aria-current="page"{{end}}>{{template "icon-clock"}}<span>{{t $l "nav.activity"}}</span></a>
+  <a href="/notifications" {{if navActive .Path "/notifications"}}aria-current="page"{{end}}>{{template "icon-bell"}}<span>{{t $l "nav.notifications"}}</span></a>
+  <a href="/settings" {{if navActive .Path "/settings"}}aria-current="page"{{end}}>{{template "icon-gear"}}<span>{{t $l "nav.settings"}}</span></a>
+{{end}}
+
+{{define "flash"}}{{if .Flash}}
+  <div class="banner good" role="status">{{template "icon-check"}}<p>{{t .L (print "flash." .Flash)}}</p></div>
+{{end}}{{end}}

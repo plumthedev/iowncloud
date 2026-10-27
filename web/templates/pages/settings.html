@@ -1,0 +1,59 @@
+{{define "title"}}{{t .L "nav.settings"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<h1>{{t $l "nav.settings"}}</h1>
+
+<form method="post" action="/settings">
+  <h2>{{t $l "settings.links"}}</h2>
+  <div class="group"><div class="pad">
+    <label>{{t $l "settings.base_url"}}
+      <input type="url" name="base_url" value="{{.BaseURL}}" required autocapitalize="off" autocorrect="off" spellcheck="false">
+      <small>{{t $l "settings.base_url_hint"}}</small>
+    </label>
+    {{if ne .BaseURL .Origin}}
+      <button type="button" class="small secondary" onclick="this.form.base_url.value={{.Origin}}">{{t $l "settings.use_origin" "URL" .Origin}}</button>
+    {{end}}
+  </div></div>
+
+  <h2>{{t $l "settings.alerts"}}</h2>
+  <div class="group">
+    <label class="row"><span class="label">{{t $l "settings.stale_days"}}<small>{{t $l "settings.stale_days_hint"}}</small></span>
+      <input type="number" name="stale_days" min="1" max="365" inputmode="numeric" value="{{.StaleDays}}" style="width:5rem;margin:0"></label>
+    <label class="row"><span class="label">{{t $l "settings.notify_lang"}}</span>
+      <select name="language" style="width:auto;margin:0">{{$nl := .NotifyLang}}
+        {{range .Languages}}<option value="{{.Code}}" {{if eq .Code $nl}}selected{{end}}>{{.Name}}</option>{{end}}
+      </select></label>
+  </div>
+  <button type="submit" style="margin-top:8px">{{t $l "common.save"}}</button>
+</form>
+
+<h2>{{t $l "settings.ui_lang"}}</h2>
+<form method="post" action="/lang" class="group">
+  <div class="row">
+    <select name="lang" onchange="this.form.submit()" style="margin:0" aria-label="{{t $l "settings.ui_lang"}}">{{$cur := .Lang}}
+      {{range .Languages}}<option value="{{.Code}}" {{if eq .Code $cur}}selected{{end}}>{{.Name}}</option>{{end}}
+    </select>
+  </div>
+  <noscript><button type="submit">{{t $l "common.save"}}</button></noscript>
+</form>
+
+<h2>{{t $l "settings.system"}}</h2>
+<div class="group">
+  <div class="row"><span class="label">{{t $l "settings.muxer"}}<small>netmuxd</small></span>
+    <span class="value">{{if not .Muxer.Enabled}}{{t $l "settings.disabled"}}{{else if .Muxer.Running}}<span class="st-ok">{{t $l "settings.running"}}</span>{{else}}<span class="st-failed">{{t $l "settings.stopped"}}</span>{{end}}
+    {{if .Muxer.Restarts}}<small>{{tn $l "settings.restarts" .Muxer.Restarts}}</small>{{end}}</span></div>
+  <div class="row"><span class="label">{{t $l "settings.usb"}}</span>
+    <span class="value">{{if .USB}}<span class="st-ok">{{t $l "settings.available"}}</span>{{else}}{{t $l "settings.unavailable"}}{{end}}</span></div>
+  <div class="row"><span class="label">{{t $l "settings.versions"}}<small>{{if not .Reflink}}{{t $l "settings.reflink_hint"}}{{end}}</small></span>
+    <span class="value">{{if .Reflink}}<span class="st-ok">{{t $l "settings.supported"}}</span>{{else}}<span class="st-failed">{{t $l "settings.unsupported"}}</span>{{end}}</span></div>
+  <div class="row"><span class="label">{{t $l "settings.free"}}<small>{{.BackupDir}}</small></span>
+    <span class="value">{{if ge .Free 0}}{{bytes .Free}}{{else}}?{{end}}</span></div>
+  <div class="row"><span class="label">{{t $l "settings.version"}}</span><span class="value">{{.Version}}</span></div>
+</div>
+
+{{if .AuthOn}}
+<form method="post" action="/logout" style="margin-top:24px">
+  <button type="submit" class="secondary outline">{{t $l "settings.logout"}}</button>
+</form>
+{{end}}
+<p class="footnote" style="margin-top:16px"><a href="https://github.com/plumthedev/iowncloud">github.com/plumthedev/iowncloud</a> · AGPL-3.0</p>
+{{end}}

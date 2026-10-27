@@ -1,0 +1,10 @@
+{{define "title"}}{{t .L "setup.title"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<div class="brand-big"><div class="device-icon">{{template "icon-cloud"}}</div><h1>{{t $l "setup.title"}}</h1><p>{{t $l "setup.intro"}}</p></div>
+{{if .Error}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{t $l "setup.error"}}</p></div>{{end}}
+<form method="post" action="/setup" class="group"><div class="pad">
+  <input type="password" name="password" autocomplete="new-password" minlength="8" required autofocus placeholder="{{t $l "setup.password"}}" aria-label="{{t $l "setup.password"}}">
+  <input type="password" name="password2" autocomplete="new-password" minlength="8" required placeholder="{{t $l "setup.password2"}}" aria-label="{{t $l "setup.password2"}}">
+  <button type="submit">{{t $l "setup.submit"}}</button>
+</div></form>
+{{end}}

@@ -1,0 +1,33 @@
+{{define "title"}}{{t .L "restore.title"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<a class="back" href="/">{{template "icon-chevron"}} {{t $l "nav.devices"}}</a>
+<h1>{{t $l "restore.title"}}</h1>
+<p>{{t $l "restore.intro"}}</p>
+
+<h2>Mac</h2>
+<div class="group"><div class="pad">
+  <ol class="steps">
+    <li>{{t $l "restore.step_copy"}}</li>
+    <li>{{t $l "restore.mac_paste"}}<pre class="log">~/Library/Application Support/MobileSync/Backup/</pre></li>
+    <li>{{t $l "restore.mac_finder"}}</li>
+  </ol>
+</div></div>
+
+<h2>Windows</h2>
+<div class="group"><div class="pad">
+  <ol class="steps">
+    <li>{{t $l "restore.step_copy"}}</li>
+    <li>{{t $l "restore.win_paste"}}<pre class="log">%APPDATA%\Apple Computer\MobileSync\Backup\</pre><small>{{t $l "restore.win_store"}}</small><pre class="log">%USERPROFILE%\Apple\MobileSync\Backup\</pre></li>
+    <li>{{t $l "restore.win_itunes"}}</li>
+  </ol>
+</div></div>
+
+<h2>{{t $l "restore.notes"}}</h2>
+<div class="group"><div class="pad">
+  <ul>
+    <li>{{t $l "restore.note_password"}}</li>
+    <li>{{t $l "restore.note_new_phone"}}</li>
+    <li>{{t $l "restore.note_folder"}}</li>
+  </ul>
+</div></div>
+{{end}}

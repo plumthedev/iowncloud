@@ -1,0 +1,317 @@
+[app]
+name = "iowncloud"
+
+[nav]
+devices = "Urządzenia"
+activity = "Historia"
+notifications = "Alerty"
+settings = "Ustawienia"
+
+[common]
+save = "Zapisz"
+
+[flash]
+saved = "Zapisano."
+removed = "Urządzenie usunięte. Jego backupy zostają na dysku."
+paired = "Plik parowania dodany. Urządzenie pojawi się, gdy będzie w tej samej sieci Wi-Fi."
+encrypted = "Szyfrowanie włączone. Dobrze schowaj to hasło."
+channel_added = "Kanał dodany. Wyślij test, żeby mieć pewność."
+channel_deleted = "Kanał usunięty."
+test_sent = "Testowe powiadomienie wysłane."
+
+[status]
+usb = "USB"
+wifi = "Wi-Fi"
+offline = "Poza siecią"
+encrypted = "Szyfrowany"
+not_encrypted = "Bez szyfrowania"
+
+[phase]
+queued = "Czeka na start…"
+snapshot = "Zapisuję poprzednią wersję…"
+connecting = "Łączę się z iPhone'em…"
+passcode = "Odblokuj iPhone'a i wpisz kod"
+transfer = "Robię backup…"
+done = "Gotowe"
+
+[device]
+last_backup = "Ostatni backup {{.Ago}}"
+never_backed_up = "Jeszcze bez backupu"
+last_nopasscode = "Ostatnia próba: kod nie został wpisany na czas."
+last_failed = "Ostatnia próba nie udała się. Szczegóły w urządzeniu."
+backup_now = "Zrób backup"
+backup_hint = "Potem odblokuj iPhone'a i w ciągu minuty wpisz kod."
+offline_hint = "iPhone musi być w tej samej sieci Wi-Fi (albo na kablu), żeby zrobić backup."
+about = "Informacje"
+model = "Model"
+last_seen = "Ostatnio widziany"
+danger = "Usuwanie"
+remove = "Usuń urządzenie"
+remove_confirm = "Usunąć to urządzenie? Parowanie zostanie skasowane, backupy zostają na dysku."
+remove_hint = "Backupy, które już są na dysku, zostają. Urządzenie możesz później sparować ponownie."
+
+[devices]
+add = "Dodaj"
+muxer_down = "Usługa urządzeń (netmuxd) nie działa. iPhone'y są teraz nieosiągalne."
+usb_detected = "iPhone podłączony przez USB"
+usb_detected_hint = "Dotknij, żeby sparować go z tym serwerem."
+empty_title = "Jeszcze nie ma iPhone'a"
+empty_text = "Sparuj iPhone'a raz, kablem albo plikiem parowania. Potem backupy idą po Wi-Fi."
+add_first = "Dodaj iPhone'a"
+
+[encryption]
+title = "Szyfrowanie"
+on = "Backupy są szyfrowane"
+on_hint = "Bez hasła backupu nie da się ich przywrócić. iowncloud go nie przechowuje."
+off = "Backupy nie są szyfrowane"
+off_hint = "Nieszyfrowany backup pomija hasła, dane Zdrowia i ustawienia Wi-Fi. Wybierz hasło, żeby włączyć szyfrowanie. iowncloud go nie przechowuje."
+password = "Hasło backupu"
+password2 = "Powtórz hasło"
+saved = "Zapisałem to hasło w menedżerze haseł"
+passcode_hint = "iPhone poprosi o kod, żeby to potwierdzić. Następny backup będzie pełny."
+enable = "Włącz szyfrowanie"
+unknown = "Połącz iPhone'a, żeby sprawdzić szyfrowanie."
+err_short = "Hasło musi mieć co najmniej 8 znaków."
+err_mismatch = "Hasła się różnią."
+err_saved = "Najpierw zapisz hasło. Bez niego backupy są bezużyteczne."
+err_busy = "Poczekaj, aż skończy się trwający backup."
+
+[schedule]
+title = "Przypomnienia"
+interval = "Backup co"
+days = "dni"
+window = "Przypominaj między"
+window_hint = "Gdy backup jest należny, a iPhone w domu, dostajesz jedno przypomnienie dziennie w tych godzinach."
+from = "Od"
+to = "Do"
+keep = "Ile poprzednich wersji trzymać"
+no_reflink = "Wymaga dysku z Btrfs albo XFS."
+
+[versions]
+title = "Wersje"
+latest = "Najnowsza"
+snapshot = "Wersja"
+path = "Folder"
+none = "Jeszcze nie ma backupów."
+how_restore = "Jak przywrócić"
+path_hint = "Ścieżki są z wnętrza kontenera; na NAS-ie znajdziesz je w folderze zamontowanym jako {{.Dir}}."
+
+[activity]
+recent = "Ostatnie backupy"
+empty = "Jeszcze nie ma backupów."
+
+[job]
+title = "Backup"
+device = "Urządzenie"
+status_label = "Status"
+trigger_label = "Uruchomił"
+started = "Start"
+duration = "Czas"
+files_label = "Odebrane pliki"
+size = "Rozmiar backupu"
+snapshot = "Poprzednia wersja zapisana w"
+error = "Co się stało"
+nopasscode_explain = "iPhone poprosił o kod, ale nikt go nie wpisał w ciągu około minuty. Spróbuj ponownie z telefonem w ręku."
+log = "Log"
+
+[job.status]
+queued = "W kolejce"
+running = "W toku"
+ok = "Zrobiony"
+failed = "Nieudany"
+nopasscode = "Bez kodu"
+
+[job.trigger]
+manual = "Ty, w aplikacji"
+link = "Link z powiadomienia"
+telegram = "Przycisk w Telegramie"
+
+[job.files]
+one = "{{.Count}} plik"
+few = "{{.Count}} pliki"
+many = "{{.Count}} plików"
+other = "{{.Count}} pliku"
+
+[add]
+title = "Dodaj iPhone'a"
+intro = "iPhone musi raz zaufać temu serwerowi. Wybierz łatwiejszy sposób."
+usb_title = "Kablem USB"
+usb_step1 = "Podłącz iPhone'a do portu USB serwera."
+usb_step2 = "Odblokuj go i zostaw na ekranie głównym."
+usb_step3 = "Dotknij Sparuj poniżej, a potem Zaufaj na iPhonie."
+usb_unavailable = "Ten kontener nie ma dostępu do USB. Uruchom go z tymi opcjami Dockera albo użyj pliku parowania:"
+usb_waiting = "Czekam na iPhone'a na USB…"
+usb_found = "Znaleziono iPhone'a"
+pair = "Sparuj"
+pair_ok = "Sparowano!"
+pair_ok_hint = "Możesz odłączyć kabel. Backupy idą teraz po Wi-Fi."
+open_device = "Otwórz urządzenie"
+pair_trust = "Spójrz na iPhone'a"
+pair_trust_hint = "Dotknij Zaufaj i wpisz kod, potem naciśnij Dalej."
+pair_continue = "Dalej"
+pair_error = "Parowanie nie udało się"
+pair_retry = "Spróbuj ponownie"
+upload_title = "Plikiem parowania"
+upload_intro = "Synchronizowałeś już tego iPhone'a z Makiem lub PC? Wgraj plik parowania, który wtedy powstał."
+mac_step1 = "Podłącz iPhone'a, otwórz go w Finderze i zaznacz „Pokazuj tego iPhone'a przy Wi-Fi”. Kliknij Zastosuj."
+mac_step2 = "Skopiuj pliki parowania na Biurko w Terminalu:"
+mac_step3 = "Wgraj plik nazwany UDID-em iPhone'a (nie SystemConfiguration.plist)."
+mac_hint = "UDID znajdziesz w Finderze, klikając tekst pod nazwą iPhone'a."
+win_step1 = "Zsynchronizuj iPhone'a raz w iTunes albo Urządzeniach Apple i włącz synchronizację przez Wi-Fi."
+win_step2 = "Wgraj plik .plist nazwany UDID-em z tego folderu:"
+upload_file = "Plik parowania"
+upload_button = "Wgraj"
+upload_err_missing = "Najpierw wybierz plik."
+upload_err_name = "Nazwa pliku musi być UDID-em iPhone'a, np. 00008110-000A1C263410401E.plist."
+upload_err_invalid = "To nie wygląda na plik parowania."
+
+[notifications]
+intro = "Przypomnienia, wyniki i ostrzeżenia trafiają do każdego kanału poniżej. Przypomnienia mają przycisk, który uruchamia backup."
+test_failed = "Testowe powiadomienie nie doszło."
+test = "Test"
+enabled = "Aktywny"
+on_success = "Także udane backupy"
+on_success_hint = "Wyłączone: tylko przypomnienia i problemy."
+delete = "Usuń kanał"
+delete_confirm = "Usunąć ten kanał?"
+none = "Brak kanałów. Dodaj jeden, żeby dostawać przypomnienia."
+add = "Dodaj kanał"
+service = "Usługa"
+choose = "Wybierz…"
+name = "Nazwa (opcjonalnie)"
+name_placeholder = "np. Mój telefon"
+raw = "Albo wklej URL shoutrrr"
+raw_hint = "Dowolna usługa obsługiwana przez shoutrrr, np. telegram://token@telegram?chats=123."
+save = "Dodaj kanał"
+links_hint = "Przyciski w powiadomieniach otwierają {{.URL}}. Telefon musi mieć dostęp do tego adresu, czyli być w domowym Wi-Fi albo na VPN."
+more_options = "Więcej opcji"
+
+[hint]
+ntfy = "Zainstaluj darmową aplikację ntfy, zasubskrybuj temat i wpisz tu ten sam temat. Przypomnienia dostaną przycisk „Zrób backup”, który działa bez otwierania czegokolwiek."
+telegram = "Utwórz bota przez @BotFather i wklej jego token. Napisz do bota wiadomość, a potem wpisz swój chat ID (np. z @userinfobot). Przypomnienia dostaną przycisk prosto w czacie. Użyj bota tylko dla iowncloud."
+
+[settings]
+links = "Linki w powiadomieniach"
+base_url = "Adres serwera"
+base_url_hint = "Adres, pod którym telefon widzi ten serwer, np. http://192.168.1.10:8080."
+use_origin = "Użyj {{.URL}}"
+alerts = "Alerty"
+stale_days = "Ostrzegaj po braku backupu przez"
+stale_days_hint = "Dni. Głośniejszy alert niż codzienne przypomnienie."
+notify_lang = "Język powiadomień"
+ui_lang = "Język aplikacji"
+system = "System"
+muxer = "Usługa urządzeń"
+disabled = "Wyłączona"
+running = "Działa"
+stopped = "Zatrzymana"
+usb = "Dostęp do USB"
+available = "Jest"
+unavailable = "Brak"
+versions = "Poprzednie wersje"
+reflink_hint = "Dysk backupów nie obsługuje copy-on-write (Btrfs, XFS); jedna kopia na urządzenie."
+supported = "Obsługiwane"
+unsupported = "Nieobsługiwane"
+free = "Wolne miejsce"
+version = "Wersja"
+logout = "Wyloguj"
+
+[settings.restarts]
+one = "{{.Count}} restart"
+few = "{{.Count}} restarty"
+many = "{{.Count}} restartów"
+other = "{{.Count}} restartu"
+
+[restore]
+title = "Przywracanie backupu"
+intro = "Backupy są w tym samym formacie co w Finderze i iTunes, więc przywracasz je narzędziami Apple."
+step_copy = "Skopiuj folder backupu z NAS-a (zobacz Wersje na stronie urządzenia)."
+mac_paste = "Wklej go do tego folderu (w Finderze: Idź → Idź do folderu):"
+mac_finder = "Podłącz iPhone'a, otwórz go w Finderze i kliknij Odtwórz z backupu."
+win_paste = "Wklej go do:"
+win_store = "Urządzenia Apple albo iTunes ze Sklepu Microsoft używają:"
+win_itunes = "Podłącz iPhone'a i wybierz Odtwórz z backupu."
+notes = "Warto wiedzieć"
+note_password = "Szyfrowany backup wymaga hasła, które wybrałeś. Nikt go nie odzyska."
+note_new_phone = "Konfigurujesz nowego iPhone'a? Wybierz „Z Maca lub PC”."
+note_folder = "Nazwa folderu nie ma znaczenia, liczy się zawartość."
+
+[login]
+title = "Logowanie"
+error = "Złe hasło."
+password = "Hasło"
+submit = "Zaloguj"
+
+[setup]
+title = "Witaj"
+intro = "Wybierz hasło do tej aplikacji. Będzie potrzebne na każdym urządzeniu, z którego się logujesz."
+error = "Użyj co najmniej 8 znaków i wpisz je dwa razy tak samo."
+password = "Nowe hasło"
+password2 = "Powtórz hasło"
+submit = "Start"
+
+[action]
+title = "Backup"
+starting = "Uruchamiam backup…"
+started = "Wpisz kod"
+started_hint = "Odblokuj iPhone'a i wpisz kod, gdy o niego poprosi. Możesz zamknąć tę stronę."
+expired = "Ten link już nie działa"
+expired_hint = "Został już użyty albo ma więcej niż 12 godzin."
+open_app = "Otwórz iowncloud"
+
+[notify]
+button = "Zrób backup"
+
+[notify.reminder]
+title = "📱 Czas na backup: {{.Device}}"
+body = "Ostatni backup: {{.Ago}}. Dotknij przycisku i wpisz kod iPhone'a."
+
+[notify.ok]
+title = "✅ {{.Device}}: backup zrobiony"
+body = "{{.Files}} plików w {{.Duration}}, razem {{.Size}}."
+
+[notify.failed]
+title = "❌ Backup {{.Device}} nie udał się"
+body = "{{.Error}}"
+
+[notify.nopasscode]
+title = "🔐 Nie wpisano kodu"
+body = "Backup {{.Device}} wymaga kodu iPhone'a. Spróbuj ponownie z telefonem w ręku."
+
+[notify.stale]
+title = "⚠️ {{.Device}}: brak backupu od {{.Detail}} dni"
+body = "Ostatni udany backup: {{.Ago}}."
+
+[notify.muxer]
+title = "⚠️ Usługa urządzeń zrestartowana"
+body = "netmuxd zatrzymał się ({{.Detail}}) i został uruchomiony ponownie."
+
+[notify.test]
+title = "🔔 iowncloud"
+body = "Powiadomienia działają."
+
+[tg]
+started = "Backup wystartował. Wpisz kod na iPhonie."
+expired = "Ten przycisk już nie działa."
+
+[time]
+never = "nigdy"
+just_now = "przed chwilą"
+
+[time.minutes_ago]
+one = "{{.Count}} minutę temu"
+few = "{{.Count}} minuty temu"
+many = "{{.Count}} minut temu"
+other = "{{.Count}} minuty temu"
+
+[time.hours_ago]
+one = "godzinę temu"
+few = "{{.Count}} godziny temu"
+many = "{{.Count}} godzin temu"
+other = "{{.Count}} godziny temu"
+
+[time.days_ago]
+one = "wczoraj"
+few = "{{.Count}} dni temu"
+many = "{{.Count}} dni temu"
+other = "{{.Count}} dnia temu"

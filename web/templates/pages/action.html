@@ -1,0 +1,22 @@
+{{define "title"}}{{t .L "action.title"}}{{end}}
+{{define "content"}}{{$l := .L}}
+{{if .Valid}}
+<div class="big-state" id="state" data-token="{{.Token}}">
+  <div class="device-icon">{{template "icon-phone"}}</div>
+  <h1 data-msg>{{t $l "action.starting"}}</h1>
+  <p data-sub>{{with .D}}{{label .}}{{end}}</p>
+  <noscript>
+    <form method="post" action="/go/{{.Token}}"><button type="submit">{{t $l "notify.button"}}</button></form>
+  </noscript>
+</div>
+<template id="t-ok"><div class="device-icon">{{template "icon-lock"}}</div><h1>{{t $l "action.started"}}</h1><p>{{t $l "action.started_hint"}}</p></template>
+<template id="t-fail"><div class="device-icon">{{template "icon-x"}}</div><h1>{{t $l "action.expired"}}</h1><p>{{t $l "action.expired_hint"}}</p><a role="button" href="/">{{t $l "action.open_app"}}</a></template>
+{{else}}
+<div class="big-state bad">
+  <div class="device-icon">{{template "icon-x"}}</div>
+  <h1>{{t $l "action.expired"}}</h1>
+  <p>{{t $l "action.expired_hint"}}</p>
+  <a role="button" href="/">{{t $l "action.open_app"}}</a>
+</div>
+{{end}}
+{{end}}

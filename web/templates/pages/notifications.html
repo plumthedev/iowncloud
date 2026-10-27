@@ -1,0 +1,76 @@
+{{define "title"}}{{t .L "nav.notifications"}}{{end}}
+{{define "content"}}{{$l := .L}}
+<h1>{{t $l "nav.notifications"}}</h1>
+<p>{{t $l "notifications.intro"}}</p>
+
+{{if .TestErr}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{t $l "notifications.test_failed"}}<small>{{.TestErr}}</small></p></div>{{end}}
+
+{{range .Channels}}
+<div class="group">
+  <div class="row"><span class="label"><strong>{{.Name}}</strong><small>{{redact .URL}}</small></span>
+    <form method="post" action="/notifications/{{.ID}}/test"><button type="submit" class="small secondary">{{t $l "notifications.test"}}</button></form>
+  </div>
+  <form class="row switch-form" method="post" action="/notifications/{{.ID}}/toggle">
+    <input type="hidden" name="field" value="enabled">
+    <span class="label">{{t $l "notifications.enabled"}}</span>
+    <button type="submit" role="switch" aria-checked="{{.Enabled}}" aria-label="{{t $l "notifications.enabled"}}"><span class="toggle{{if .Enabled}} on{{end}}"></span></button>
+  </form>
+  <form class="row switch-form" method="post" action="/notifications/{{.ID}}/toggle">
+    <input type="hidden" name="field" value="on_success">
+    <span class="label">{{t $l "notifications.on_success"}}<small>{{t $l "notifications.on_success_hint"}}</small></span>
+    <button type="submit" role="switch" aria-checked="{{.OnSuccess}}" aria-label="{{t $l "notifications.on_success"}}"><span class="toggle{{if .OnSuccess}} on{{end}}"></span></button>
+  </form>
+  <form class="row" method="post" action="/notifications/{{.ID}}/delete" onsubmit="return confirm({{t $l "notifications.delete_confirm"}})">
+    <button type="submit" class="link" style="color:var(--bad)">{{t $l "notifications.delete"}}</button>
+  </form>
+</div>
+{{else}}
+<div class="group"><div class="row"><span class="label">{{t $l "notifications.none"}}</span></div></div>
+{{end}}
+
+<h2 id="add">{{t $l "notifications.add"}}</h2>
+{{if .Error}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{.Error}}</p></div>{{end}}
+<form method="post" action="/notifications" class="group"><div class="pad">
+  <label>{{t $l "notifications.service"}}
+    <select name="service" hx-get="/notifications/form" hx-trigger="change" hx-target="#fields" hx-swap="innerHTML">
+      <option value="" selected disabled>{{t $l "notifications.choose"}}</option>
+      {{range .Services}}<option value="{{.}}">{{.}}</option>{{end}}
+    </select>
+  </label>
+  <div id="fields"></div>
+  <label>{{t $l "notifications.name"}}
+    <input type="text" name="name" placeholder="{{t $l "notifications.name_placeholder"}}">
+  </label>
+  <label><input type="checkbox" name="on_success" value="1"> {{t $l "notifications.on_success"}}</label>
+  <details class="advanced">
+    <summary>{{t $l "notifications.raw"}}</summary>
+    <input type="text" name="raw_url" placeholder="ntfy://ntfy.example.com/backups" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <p class="footnote" style="margin:0 0 12px">{{t $l "notifications.raw_hint"}}</p>
+  </details>
+  <button type="submit">{{t $l "notifications.save"}}</button>
+</div></form>
+<p class="footnote">{{t $l "notifications.links_hint" "URL" .BaseURL}} <a href="/settings">{{t $l "nav.settings"}}</a></p>
+{{end}}
+
+{{define "channel-fields"}}{{$l := .L}}
+{{if eq .Service "ntfy"}}<p class="footnote" style="margin:0 0 12px">{{t $l "hint.ntfy"}}</p>{{end}}
+{{if eq .Service "telegram"}}<p class="footnote" style="margin:0 0 12px">{{t $l "hint.telegram"}}</p>{{end}}
+{{range .Fields}}{{if not .Advanced}}{{template "channel-field" .}}{{end}}{{end}}
+<details class="advanced">
+  <summary>{{t $l "notifications.more_options"}}</summary>
+  {{range .Fields}}{{if .Advanced}}{{template "channel-field" .}}{{end}}{{end}}
+</details>
+{{end}}
+
+{{define "channel-field"}}
+<label>{{.Label}}{{if .Required}} *{{end}}
+  {{if .Options}}
+    <select name="f_{{.Key}}">{{$def := .Default}}{{range .Options}}<option {{if eq . $def}}selected{{end}}>{{.}}</option>{{end}}</select>
+  {{else if .Bool}}
+    <select name="f_{{.Key}}"><option value="" selected>{{if .Default}}{{.Default}}{{else}}—{{end}}</option><option>yes</option><option>no</option></select>
+  {{else}}
+    <input type="text" name="f_{{.Key}}" {{if .Required}}required{{end}} placeholder="{{.Default}}" autocapitalize="off" autocorrect="off" spellcheck="false">
+  {{end}}
+  {{if .Help}}<small>{{.Help}}</small>{{end}}
+</label>
+{{end}}

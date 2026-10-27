@@ -1,0 +1,81 @@
+{{define "title"}}{{label .D.Device}}{{end}}
+{{define "content"}}{{$l := .L}}{{$d := .D}}
+<a class="back" href="/">{{template "icon-chevron"}} {{t $l "nav.devices"}}</a>
+<h1 style="margin-bottom:2px">{{label $d.Device}}</h1>
+<p class="footnote" style="margin:0 0 16px">{{if $d.ProductType}}{{model $d.ProductType}}{{else}}{{short $d.UDID}}{{end}}{{if $d.IOS}} · iOS {{$d.IOS}}{{end}}</p>
+
+{{if .Error}}<div class="banner bad" role="alert">{{template "icon-alert"}}<p>{{.Error}}</p></div>{{end}}
+
+<div data-live>{{template "device-card" (dict "D" $d "L" $l "Link" false)}}</div>
+
+<h2 id="encryption">{{t $l "encryption.title"}}</h2>
+{{if eq $d.Encrypted 1}}
+  <div class="group"><div class="row"><span class="label">{{template "icon-lock"}} {{t $l "encryption.on"}}
+    <small>{{t $l "encryption.on_hint"}}</small></span></div></div>
+{{else if eq $d.Encrypted 0}}
+  <div class="group"><div class="pad">
+    <p><strong class="st-failed">{{t $l "encryption.off"}}</strong><br>{{t $l "encryption.off_hint"}}</p>
+    <form method="post" action="/devices/{{$d.UDID}}/encryption" hx-disabled-elt="find button">
+      <input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="{{t $l "encryption.password"}}" aria-label="{{t $l "encryption.password"}}">
+      <input type="password" name="password2" autocomplete="new-password" minlength="8" required placeholder="{{t $l "encryption.password2"}}" aria-label="{{t $l "encryption.password2"}}">
+      <label><input type="checkbox" name="saved" value="1" required> {{t $l "encryption.saved"}}</label>
+      <p class="footnote" style="margin:0 0 12px">{{t $l "encryption.passcode_hint"}}</p>
+      <button type="submit">{{t $l "encryption.enable"}}</button>
+    </form>
+  </div></div>
+{{else}}
+  <div class="group"><div class="row"><span class="label">{{t $l "encryption.unknown"}}</span></div></div>
+{{end}}
+
+<h2>{{t $l "schedule.title"}}</h2>
+<form method="post" action="/devices/{{$d.UDID}}/schedule">
+  <div class="group">
+    <label class="row"><span class="label">{{t $l "schedule.interval"}}</span>
+      <span class="inline-fields" style="flex:0 0 auto"><input type="number" name="interval_days" min="1" max="60" inputmode="numeric" value="{{days $d.IntervalHours}}" style="width:5rem">
+      {{t $l "schedule.days"}}</span></label>
+    <div class="row"><span class="label">{{t $l "schedule.window"}}<small>{{t $l "schedule.window_hint"}}</small></span></div>
+    <div class="row inline-fields">
+      <input type="time" name="window_start" value="{{$d.WindowStart}}" aria-label="{{t $l "schedule.from"}}">
+      <span>–</span>
+      <input type="time" name="window_end" value="{{$d.WindowEnd}}" aria-label="{{t $l "schedule.to"}}">
+    </div>
+    <label class="row"><span class="label">{{t $l "schedule.keep"}}
+      {{if not .Reflink}}<small>{{t $l "schedule.no_reflink"}}</small>{{end}}</span>
+      <input type="number" name="keep_versions" min="0" max="100" inputmode="numeric" value="{{$d.KeepVersions}}" style="width:5rem;margin:0" {{if not .Reflink}}disabled{{end}}></label>
+  </div>
+  {{if not .Reflink}}<input type="hidden" name="keep_versions" value="{{$d.KeepVersions}}">{{end}}
+  <button type="submit" style="margin-top:8px">{{t $l "common.save"}}</button>
+</form>
+
+<h2>{{t $l "versions.title"}}</h2>
+<div class="group">
+{{range .Versions}}
+  <div class="row"><span class="label">{{if .Live}}{{t $l "versions.latest"}}{{else}}{{t $l "versions.snapshot"}}{{end}} · {{date .Time}}
+    <input class="path" readonly value="{{.Path}}" onclick="this.select()" aria-label="{{t $l "versions.path"}}"></span></div>
+{{else}}
+  <div class="row"><span class="label">{{t $l "versions.none"}}</span></div>
+{{end}}
+  <a class="row" href="/restore"><span class="label">{{t $l "versions.how_restore"}}</span><span class="chev">{{template "icon-chevron"}}</span></a>
+</div>
+<p class="footnote">{{t $l "versions.path_hint" "Dir" .BackupDir}}</p>
+
+<h2>{{t $l "activity.recent"}}</h2>
+<div class="group">
+{{range .Jobs}}{{template "job-row" (dict "J" . "L" $l)}}{{else}}
+  <div class="row"><span class="label">{{t $l "activity.empty"}}</span></div>
+{{end}}
+</div>
+
+<h2>{{t $l "device.about"}}</h2>
+<div class="group">
+  <div class="row"><span class="label">UDID</span><span class="value" style="overflow-wrap:anywhere">{{$d.UDID}}</span></div>
+  {{if $d.ProductType}}<div class="row"><span class="label">{{t $l "device.model"}}</span><span class="value">{{model $d.ProductType}}</span></div>{{end}}
+  <div class="row"><span class="label">{{t $l "device.last_seen"}}</span><span class="value">{{ago $l $d.LastSeen}}</span></div>
+</div>
+
+<h2>{{t $l "device.danger"}}</h2>
+<form method="post" action="/devices/{{$d.UDID}}/remove" onsubmit="return confirm({{t $l "device.remove_confirm"}})">
+  <button type="submit" class="danger">{{t $l "device.remove"}}</button>
+</form>
+<p class="footnote">{{t $l "device.remove_hint"}}</p>
+{{end}}

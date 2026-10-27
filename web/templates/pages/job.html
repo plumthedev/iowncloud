@@ -1,0 +1,23 @@
+{{define "title"}}{{t .L "job.title"}} #{{.J.ID}}{{end}}
+{{define "content"}}{{$l := .L}}{{$j := .J}}
+<a class="back" href="/activity">{{template "icon-chevron"}} {{t $l "nav.activity"}}</a>
+<h1>{{t $l "job.title"}} #{{$j.ID}}</h1>
+<div class="group">
+  <a class="row" href="/devices/{{$j.UDID}}"><span class="label">{{t $l "job.device"}}</span><span class="value">{{$j.DeviceName}}</span><span class="chev">{{template "icon-chevron"}}</span></a>
+  <div class="row"><span class="label">{{t $l "job.status_label"}}</span><span class="value st-{{$j.Status}}">{{t $l (print "job.status." $j.Status)}}</span></div>
+  <div class="row"><span class="label">{{t $l "job.trigger_label"}}</span><span class="value">{{t $l (print "job.trigger." $j.Trigger)}}</span></div>
+  <div class="row"><span class="label">{{t $l "job.started"}}</span><span class="value">{{unixdate $j.StartedAt}}</span></div>
+  {{if and $j.FinishedAt $j.StartedAt}}<div class="row"><span class="label">{{t $l "job.duration"}}</span><span class="value">{{dur (sub $j.FinishedAt $j.StartedAt)}}</span></div>{{end}}
+  {{if $j.Files}}<div class="row"><span class="label">{{t $l "job.files_label"}}</span><span class="value">{{$j.Files}}</span></div>{{end}}
+  {{if $j.Bytes}}<div class="row"><span class="label">{{t $l "job.size"}}</span><span class="value">{{bytes $j.Bytes}}</span></div>{{end}}
+  {{if $j.Snapshot}}<div class="row"><span class="label">{{t $l "job.snapshot"}}<input class="path" readonly value="{{$j.Snapshot}}" onclick="this.select()"></span></div>{{end}}
+</div>
+{{if $j.Error}}
+  <h2>{{t $l "job.error"}}</h2>
+  <div class="banner bad">{{template "icon-alert"}}<p>{{if eq $j.Status "nopasscode"}}{{t $l "job.nopasscode_explain"}}{{else}}{{$j.Error}}{{end}}</p></div>
+{{end}}
+{{if $j.Log}}
+  <h2>{{t $l "job.log"}}</h2>
+  <pre class="log">{{$j.Log}}</pre>
+{{end}}
+{{end}}

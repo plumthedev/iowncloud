@@ -1,0 +1,307 @@
+[app]
+name = "iowncloud"
+
+[nav]
+devices = "Devices"
+activity = "Activity"
+notifications = "Alerts"
+settings = "Settings"
+
+[common]
+save = "Save"
+
+[flash]
+saved = "Saved."
+removed = "Device removed. Its backups stay on disk."
+paired = "Pairing file added. The device shows up once it is on the same Wi-Fi."
+encrypted = "Encryption is on. Keep that password safe."
+channel_added = "Notification channel added. Send a test to be sure."
+channel_deleted = "Channel deleted."
+test_sent = "Test notification sent."
+
+[status]
+usb = "USB"
+wifi = "Wi-Fi"
+offline = "Offline"
+encrypted = "Encrypted"
+not_encrypted = "Not encrypted"
+
+[phase]
+queued = "Waiting to start…"
+snapshot = "Saving the previous version…"
+connecting = "Connecting to iPhone…"
+passcode = "Unlock your iPhone and enter the passcode"
+transfer = "Backing up…"
+done = "Done"
+
+[device]
+last_backup = "Last backup {{.Ago}}"
+never_backed_up = "Never backed up"
+last_nopasscode = "Last try: passcode was not entered in time."
+last_failed = "Last try failed. Open the device for details."
+backup_now = "Back up now"
+backup_hint = "Then unlock your iPhone and enter the passcode within a minute."
+offline_hint = "The iPhone has to be on the same Wi-Fi (or plugged in) to back up."
+about = "About"
+model = "Model"
+last_seen = "Last seen"
+danger = "Remove"
+remove = "Remove device"
+remove_confirm = "Remove this device? Its pairing is deleted; backups stay on disk."
+remove_hint = "Backups already on disk are kept. You can pair the device again later."
+
+[devices]
+add = "Add"
+muxer_down = "The device service (netmuxd) is not running. iPhones can't be reached right now."
+usb_detected = "iPhone connected over USB"
+usb_detected_hint = "Tap to pair it with this server."
+empty_title = "No iPhone yet"
+empty_text = "Pair your iPhone once with a cable or a pairing file. After that, backups run over Wi-Fi."
+add_first = "Add your iPhone"
+
+[encryption]
+title = "Encryption"
+on = "Backups are encrypted"
+on_hint = "Without your backup password they can't be restored. iowncloud never stores it."
+off = "Backups are not encrypted"
+off_hint = "Unencrypted backups skip passwords, Health data and Wi-Fi settings. Choose a password to turn encryption on. iowncloud never stores it."
+password = "Backup password"
+password2 = "Repeat password"
+saved = "I saved this password in my password manager"
+passcode_hint = "Your iPhone will ask for its passcode to confirm. The next backup will be a full one."
+enable = "Turn on encryption"
+unknown = "Connect the iPhone to check encryption."
+err_short = "The password needs at least 8 characters."
+err_mismatch = "The passwords don't match."
+err_saved = "Please save the password first. Without it the backups are useless."
+err_busy = "Wait for the running backup to finish."
+
+[schedule]
+title = "Reminders"
+interval = "Back up every"
+days = "days"
+window = "Remind me between"
+window_hint = "When a backup is due and the iPhone is home, you get one reminder per day in this window."
+from = "From"
+to = "To"
+keep = "Previous versions to keep"
+no_reflink = "Needs a Btrfs or XFS backup disk."
+
+[versions]
+title = "Versions"
+latest = "Latest"
+snapshot = "Version"
+path = "Folder"
+none = "No backups yet."
+how_restore = "How to restore"
+path_hint = "Paths are inside the container; on your NAS they are under the folder you mounted as {{.Dir}}."
+
+[activity]
+recent = "Recent backups"
+empty = "No backups yet."
+
+[job]
+title = "Backup"
+device = "Device"
+status_label = "Status"
+trigger_label = "Started by"
+started = "Started"
+duration = "Duration"
+files_label = "Files received"
+size = "Backup size"
+snapshot = "Previous version saved to"
+error = "What happened"
+nopasscode_explain = "Your iPhone asked for its passcode, but nobody entered it within about a minute. Start again with the phone in your hand."
+log = "Log"
+
+[job.status]
+queued = "Queued"
+running = "Running"
+ok = "Backed up"
+failed = "Failed"
+nopasscode = "No passcode"
+
+[job.trigger]
+manual = "You, in the app"
+link = "Notification link"
+telegram = "Telegram button"
+
+[job.files]
+one = "{{.Count}} file"
+other = "{{.Count}} files"
+
+[add]
+title = "Add iPhone"
+intro = "The iPhone has to trust this server once. Pick whichever way is easier."
+usb_title = "With a USB cable"
+usb_step1 = "Plug the iPhone into a USB port of your server."
+usb_step2 = "Unlock it and keep it on the home screen."
+usb_step3 = "Tap Pair below, then Trust on the iPhone."
+usb_unavailable = "This container has no USB access. Start it with these Docker options, or use a pairing file instead:"
+usb_waiting = "Waiting for an iPhone on USB…"
+usb_found = "iPhone found"
+pair = "Pair"
+pair_ok = "Paired!"
+pair_ok_hint = "You can unplug the cable. Backups now run over Wi-Fi."
+open_device = "Open device"
+pair_trust = "Check your iPhone"
+pair_trust_hint = "Tap Trust and enter the passcode, then press Continue."
+pair_continue = "Continue"
+pair_error = "Pairing failed"
+pair_retry = "Try again"
+upload_title = "With a pairing file"
+upload_intro = "Already synced this iPhone with a Mac or PC? Upload the pairing file it created."
+mac_step1 = "Connect the iPhone, open it in Finder and tick \"Show this iPhone when on Wi-Fi\". Click Apply."
+mac_step2 = "Copy the pairing files to your Desktop with Terminal:"
+mac_step3 = "Upload the file named after your iPhone's UDID (not SystemConfiguration.plist)."
+mac_hint = "Find the UDID in Finder by clicking the text under the iPhone's name."
+win_step1 = "Sync the iPhone once with iTunes or Apple Devices and enable Wi-Fi sync."
+win_step2 = "Upload the UDID-named .plist file from this folder:"
+upload_file = "Pairing file"
+upload_button = "Upload"
+upload_err_missing = "Choose a file first."
+upload_err_name = "The file name must be the iPhone's UDID, like 00008110-000A1C263410401E.plist."
+upload_err_invalid = "That doesn't look like a pairing file."
+
+[notifications]
+intro = "Reminders, results and warnings go to every channel below. Reminders carry a button that starts the backup."
+test_failed = "The test notification failed."
+test = "Test"
+enabled = "Active"
+on_success = "Successful backups too"
+on_success_hint = "Off: only reminders and problems."
+delete = "Delete channel"
+delete_confirm = "Delete this channel?"
+none = "No channels yet. Add one so you get backup reminders."
+add = "Add channel"
+service = "Service"
+choose = "Choose…"
+name = "Name (optional)"
+name_placeholder = "e.g. My phone"
+raw = "Paste a shoutrrr URL instead"
+raw_hint = "Any service supported by shoutrrr, e.g. telegram://token@telegram?chats=123."
+save = "Add channel"
+links_hint = "Buttons in notifications open {{.URL}}. Your phone must reach this address, so be on home Wi-Fi or VPN."
+more_options = "More options"
+
+[hint]
+ntfy = "Get the free ntfy app, subscribe to a topic and enter the same topic here. Reminders get a \"Back up now\" button that works without opening anything."
+telegram = "Create a bot with @BotFather and paste its token. Send the bot a message, then enter your chat ID (e.g. from @userinfobot). Reminders get a button right in the chat. Use a bot only for iowncloud."
+
+[settings]
+links = "Links in notifications"
+base_url = "Server address"
+base_url_hint = "How your phone reaches this server, e.g. http://192.168.1.10:8080."
+use_origin = "Use {{.URL}}"
+alerts = "Alerts"
+stale_days = "Warn after no backup for"
+stale_days_hint = "Days. A louder alert than the daily reminder."
+notify_lang = "Notification language"
+ui_lang = "App language"
+system = "System"
+muxer = "Device service"
+disabled = "Disabled"
+running = "Running"
+stopped = "Stopped"
+usb = "USB access"
+available = "Available"
+unavailable = "Not available"
+versions = "Previous versions"
+reflink_hint = "The backup disk doesn't support copy-on-write (Btrfs, XFS); one copy per device."
+supported = "Supported"
+unsupported = "Not supported"
+free = "Free space"
+version = "Version"
+logout = "Log out"
+
+[settings.restarts]
+one = "{{.Count}} restart"
+other = "{{.Count}} restarts"
+
+[restore]
+title = "Restore a backup"
+intro = "Backups are stored in the same format as Finder and iTunes, so restoring uses Apple's own tools."
+step_copy = "Copy the backup folder from your NAS (see Versions on the device page)."
+mac_paste = "Paste it into this folder (in Finder: Go → Go to Folder):"
+mac_finder = "Connect the iPhone, open it in Finder and click Restore Backup."
+win_paste = "Paste it into:"
+win_store = "Apple Devices or iTunes from the Microsoft Store uses:"
+win_itunes = "Connect the iPhone and choose Restore Backup."
+notes = "Good to know"
+note_password = "Encrypted backups need the password you chose. Nobody can recover it."
+note_new_phone = "Setting up a new iPhone? Choose \"Restore from Mac or PC\"."
+note_folder = "The folder name doesn't matter, only its contents."
+
+[login]
+title = "Log in"
+error = "Wrong password."
+password = "Password"
+submit = "Log in"
+
+[setup]
+title = "Welcome"
+intro = "Choose a password for this app. You'll need it on each device you log in from."
+error = "Use at least 8 characters, typed the same twice."
+password = "New password"
+password2 = "Repeat password"
+submit = "Start"
+
+[action]
+title = "Back up"
+starting = "Starting backup…"
+started = "Enter your passcode"
+started_hint = "Unlock your iPhone and type its passcode when asked. You can close this page."
+expired = "This link no longer works"
+expired_hint = "It was already used or is older than 12 hours."
+open_app = "Open iowncloud"
+
+[notify]
+button = "Back up now"
+
+[notify.reminder]
+title = "📱 Time to back up {{.Device}}"
+body = "Last backup: {{.Ago}}. Tap the button, then enter your iPhone passcode."
+
+[notify.ok]
+title = "✅ {{.Device}} is backed up"
+body = "{{.Files}} files in {{.Duration}}, {{.Size}} in total."
+
+[notify.failed]
+title = "❌ Backup of {{.Device}} failed"
+body = "{{.Error}}"
+
+[notify.nopasscode]
+title = "🔐 Passcode not entered"
+body = "The backup of {{.Device}} needs your iPhone passcode. Try again with the phone in your hand."
+
+[notify.stale]
+title = "⚠️ No backup of {{.Device}} for {{.Detail}} days"
+body = "Last successful backup: {{.Ago}}."
+
+[notify.muxer]
+title = "⚠️ Device service restarted"
+body = "netmuxd stopped ({{.Detail}}) and was restarted."
+
+[notify.test]
+title = "🔔 iowncloud"
+body = "Notifications work."
+
+[tg]
+started = "Backup started. Enter your iPhone passcode."
+expired = "This button no longer works."
+
+[time]
+never = "never"
+just_now = "just now"
+
+[time.minutes_ago]
+one = "{{.Count}} minute ago"
+other = "{{.Count}} minutes ago"
+
+[time.hours_ago]
+one = "{{.Count}} hour ago"
+other = "{{.Count}} hours ago"
+
+[time.days_ago]
+one = "{{.Count}} day ago"
+other = "{{.Count}} days ago"
